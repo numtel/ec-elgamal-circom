@@ -24,6 +24,7 @@ import {
     formatPrivKeyForBabyJub,
     coordinatesToExtPoint,
 } from "../utils/tools";
+import { decode, encode, split64 } from "../utils/decode";
 
 type EncryptCircuitInputs = {
     message: string[];
@@ -36,6 +37,9 @@ type DecryptCircuitInputs = {
     ephemeralKey: string[];
     privateKey: string;
 };
+
+const wasm_path_encode = "./circuits/artifacts/encode_test/encode.wasm";
+const zkey_path_encode = "./circuits/artifacts/encode_test/encode.zkey";
 
 const wasm_path_encrypt = "./circuits/artifacts/encrypt_test/encrypt.wasm";
 const zkey_path_encrypt = "./circuits/artifacts/encrypt_test/encrypt.zkey";
@@ -65,6 +69,31 @@ const genCircuitInputs = (
 };
 
 describe("Testing ElGamal Scheme Circuits\n", () => {
+    context("Testing Encode Circuit", () => {
+
+        it("Encode/decode is same", async () => {
+            const plaintext = 12345n;
+            const encoded = encode(plaintext);
+            const decoded = decode(encoded, 19);
+            expect(decoded).to.equal(plaintext);
+
+            const input_encode = {
+              plaintext: plaintext.toString(),
+            };
+
+            const prove_encode = await snarkjs.groth16.fullProve(
+                input_encode,
+                wasm_path_encode,
+                zkey_path_encode,
+            );
+
+            console.log(decoded, encoded, prove_encode);
+
+            expect(prove_encode.publicSignals[0]).to.equal(encoded.ex);
+            expect(prove_encode.publicSignals[1]).to.equal(encoded.ey);
+        });
+    });
+
     context("Testing Encrypt Circuit", () => {
         let input_encrypt: EncryptCircuitInputs;
         let keypair: Keypair;
