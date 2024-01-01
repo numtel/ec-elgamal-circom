@@ -1,5 +1,5 @@
 import * as bench from 'micro-bmark';
-import * as assert from 'assert'
+import assert from 'assert'
 import { decode, encode } from '../utils/decode';
 import { genRandomSalt, babyJub } from '../src';
 import { pruneTo32Bits } from '../utils/tools';

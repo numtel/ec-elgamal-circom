@@ -1,12 +1,18 @@
 import { ExtPointType } from "@noble/curves/abstract/edwards";
 import { babyJub } from "../src/index";
+import { compute } from "./lookupTable";
 const fs = require("fs");
 
 function fetch_table(precomputeSize: number) {
-    return JSON.parse(fs.readFileSync(`./lookupTables/x${precomputeSize}xlookupTable.json`));
+    try {
+        return JSON.parse(fs.readFileSync(`./lookupTables/x${precomputeSize}xlookupTable.json`));
+    } catch (error) {
+        // Generate it now if not cached
+        return compute(precomputeSize);
+    }
 }
 
-let lookupTable;
+let lookupTable: any;
 
 function decode(encoded: ExtPointType, precomputeSize: number): bigint {
     /* The first time decode is called, it will call fetch_table() and store the lookupTable variable. 

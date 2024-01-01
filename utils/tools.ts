@@ -10,7 +10,7 @@ import { BabyJubAffinePoint, BabyJubExtPoint } from "../src";
 const babyJub = CURVE.ExtendedPoint;
 
 // Taken from https://github.com/iden3/circomlibjs/blob/main/src/eddsa.js
-function pruneBuffer(buff) {
+function pruneBuffer(buff: any) {
     buff[0] = buff[0] & 0xf8;
     buff[31] = buff[31] & 0x7f;
     buff[31] = buff[31] | 0x40;
@@ -18,7 +18,7 @@ function pruneBuffer(buff) {
 }
 
 // Taken from https://github.com/iden3/circomlibjs/blob/main/src/eddsa.js
-function prv2pub(prv) {
+function prv2pub(prv: any) {
     const sBuff = pruneBuffer(createBlakeHash("blake512").update(Buffer.from(prv)).digest());
     let s = Scalar.fromRprLE(sBuff, 0, 32);
     const A = babyJub.BASE.multiply(BigInt(Scalar.shr(s, 3)));

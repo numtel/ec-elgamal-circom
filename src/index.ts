@@ -1,8 +1,8 @@
 import { AffinePoint } from "@noble/curves/abstract/curve";
 import { babyJub as CURVE } from "../utils/babyjub-noble";
 import { prv2pub, bigInt2Buffer, formatPrivKeyForBabyJub } from "../utils/tools";
-import * as assert from "assert";
-import * as crypto from "crypto";
+import assert from "assert";
+import crypto from "crypto";
 import { ExtPointType } from "@noble/curves/abstract/edwards";
 
 type SnarkBigInt = bigint;
@@ -116,6 +116,7 @@ function encrypt(pubKey: PubKey, encodedMessage?: BabyJubExtPoint, randomVal?: b
     const masking_key = pubKey.multiply(nonce);
     let encrypted_message: BabyJubExtPoint;
     // The sender encrypts the encodedMessage
+    // @ts-ignore
     if (pubKey.assertValidity && !pubKey.equals(babyJub.ZERO)) {
         encrypted_message = message.add(masking_key);
     } else throw new Error("Invalid Public Key!");
