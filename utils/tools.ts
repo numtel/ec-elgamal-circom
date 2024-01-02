@@ -1,12 +1,12 @@
-const createBlakeHash = require("blake-hash");
-const ff = require("ffjavascript");
+import createBlakeHash from "blake-hash";
+import * as ff from "ffjavascript";
+import { Scalar } from "ffjavascript";
+import { babyJub as CURVE } from "./babyjub-noble";
+import { BabyJubAffinePoint, BabyJubExtPoint } from "../src";
 
 const stringifyBigInts: (obj: object) => any = ff.utils.stringifyBigInts;
 const unstringifyBigInts: (obj: object) => any = ff.utils.unstringifyBigInts;
 
-import { Scalar } from "ffjavascript";
-import { babyJub as CURVE } from "./babyjub-noble";
-import { BabyJubAffinePoint, BabyJubExtPoint } from "../src";
 const babyJub = CURVE.ExtendedPoint;
 
 // Taken from https://github.com/iden3/circomlibjs/blob/main/src/eddsa.js

@@ -1,7 +1,7 @@
+import * as fs from "fs";
 import { ExtPointType } from "@noble/curves/abstract/edwards";
 import { babyJub } from "../src/index";
 import { compute } from "./lookupTable";
-const fs = require("fs");
 
 function fetch_table(precomputeSize: number) {
     try {

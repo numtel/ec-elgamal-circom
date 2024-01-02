@@ -1,14 +1,40 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.pruneTo32Bits = exports.pruneTo64Bits = exports.coordinatesToExtPoint = exports.formatPrivKeyForBabyJub = exports.toBigIntArray = exports.toStringArray = exports.unstringifyBigInts = exports.stringifyBigInts = exports.getSignalByName = exports.bigInt2Buffer = exports.prv2pub = exports.pruneBuffer = void 0;
-const createBlakeHash = require("blake-hash");
-const ff = require("ffjavascript");
+const blake_hash_1 = __importDefault(require("blake-hash"));
+const ff = __importStar(require("ffjavascript"));
+const ffjavascript_1 = require("ffjavascript");
+const babyjub_noble_1 = require("./babyjub-noble");
 const stringifyBigInts = ff.utils.stringifyBigInts;
 exports.stringifyBigInts = stringifyBigInts;
 const unstringifyBigInts = ff.utils.unstringifyBigInts;
 exports.unstringifyBigInts = unstringifyBigInts;
-const ffjavascript_1 = require("ffjavascript");
-const babyjub_noble_1 = require("./babyjub-noble");
 const babyJub = babyjub_noble_1.babyJub.ExtendedPoint;
 // Taken from https://github.com/iden3/circomlibjs/blob/main/src/eddsa.js
 function pruneBuffer(buff) {
@@ -20,7 +46,7 @@ function pruneBuffer(buff) {
 exports.pruneBuffer = pruneBuffer;
 // Taken from https://github.com/iden3/circomlibjs/blob/main/src/eddsa.js
 function prv2pub(prv) {
-    const sBuff = pruneBuffer(createBlakeHash("blake512").update(Buffer.from(prv)).digest());
+    const sBuff = pruneBuffer((0, blake_hash_1.default)("blake512").update(Buffer.from(prv)).digest());
     let s = ffjavascript_1.Scalar.fromRprLE(sBuff, 0, 32);
     const A = babyJub.BASE.multiply(BigInt(ffjavascript_1.Scalar.shr(s, 3)));
     return A;
@@ -32,7 +58,7 @@ exports.prv2pub = prv2pub;
  * PubKey and other circuits.
  */
 function formatPrivKeyForBabyJub(privKey) {
-    const sBuff = pruneBuffer(createBlakeHash("blake512").update(bigInt2Buffer(privKey)).digest().slice(0, 32));
+    const sBuff = pruneBuffer((0, blake_hash_1.default)("blake512").update(bigInt2Buffer(privKey)).digest().slice(0, 32));
     const s = ff.utils.leBuff2int(sBuff);
     return ff.Scalar.shr(s, 3);
 }
