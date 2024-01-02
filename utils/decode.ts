@@ -2,10 +2,11 @@ import * as fs from "fs";
 import { ExtPointType } from "@noble/curves/abstract/edwards";
 import { babyJub } from "../src/index";
 import { compute } from "./lookupTable";
+import { encode } from "./encode";
 
 function fetch_table(precomputeSize: number) {
     try {
-        return JSON.parse(fs.readFileSync(`./lookupTables/x${precomputeSize}xlookupTable.json`));
+        return JSON.parse(fs.readFileSync(`./lookupTables/x${precomputeSize}xlookupTable.json`, {encoding: 'utf8'}));
     } catch (error) {
         // Generate it now if not cached
         return compute(precomputeSize);
@@ -35,12 +36,6 @@ function decode(encoded: ExtPointType, precomputeSize: number): bigint {
         }
     }
     throw new Error("Not Found!");
-}
-
-function encode(plaintext: bigint): ExtPointType {
-    if (plaintext <= BigInt(2) ** BigInt(32)) {
-        return babyJub.BASE.multiplyUnsafe(plaintext);
-    } else throw new Error("The input should be 32-bit bigint");
 }
 
 // xlo and xhi merging  verification

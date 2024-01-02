@@ -1,7 +1,8 @@
 // @ts-disable
 import { babyJub } from "../src/index";
-const fs = require("fs");
-const ProgressBar = require("cli-progress");
+import * as fs from "fs";
+// @ts-ignore
+import ProgressBar from "cli-progress";
 
 /**
  * Build a lookup table to break discrete log for 32-bit scalars for decoding

@@ -1,16 +1,14 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.compute = void 0;
 // @ts-disable
-const index_1 = require("../src/index");
-const fs = require("fs");
-const ProgressBar = require("cli-progress");
+import { babyJub } from "../src/index";
+import * as fs from "fs";
+// @ts-ignore
+import ProgressBar from "cli-progress";
 /**
  * Build a lookup table to break discrete log for 32-bit scalars for decoding
  * @param precomputeSize the size of the lookup table to be used --> 2**pc_size
  * @returns an object that contains 2**pc_size of keys and values
  */
-function compute(precomputeSize) {
+export function compute(precomputeSize) {
     const directoryName = "lookupTables";
     // Check if the lookupTables directory exists
     if (!fs.existsSync(directoryName)) {
@@ -32,7 +30,7 @@ function compute(precomputeSize) {
     });
     bar.start(Number(upperBound), 0);
     for (let xhi = BigInt(0); xhi < upperBound; xhi++) {
-        key = index_1.babyJub.BASE.multiplyUnsafe(xhi * BigInt(2) ** BigInt(range))
+        key = babyJub.BASE.multiplyUnsafe(xhi * BigInt(2) ** BigInt(range))
             .toAffine()
             .x.toString();
         lookupTable[key] = xhi.toString(16);
@@ -42,4 +40,3 @@ function compute(precomputeSize) {
     fs.writeFileSync(`./lookupTables/x${precomputeSize}xlookupTable.json`, JSON.stringify(lookupTable));
     return lookupTable;
 }
-exports.compute = compute;

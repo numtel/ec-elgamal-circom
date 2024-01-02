@@ -1,4 +1,5 @@
-import createBlakeHash from "blake-hash";
+// @ts-ignore
+import createBlakeHash from "blake-hash/js";
 import * as ff from "ffjavascript";
 import { Scalar } from "ffjavascript";
 import { babyJub as CURVE } from "./babyjub-noble";

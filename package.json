@@ -2,6 +2,7 @@
   "name": "ec-elgamal-circuit",
   "version": "2.0.0",
   "description": "Circom2 Circuit of ElGamal Scheme over Baby Jubjub Curve",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "ptau": "./scripts/ptau.sh",
@@ -48,7 +49,7 @@
   },
   "dependencies": {
     "@noble/curves": "^1.2.0",
-    "blake-hash": "2.0.0",
+    "blake-hash": "^2.0.0",
     "circomlib": "^2.0.5",
     "circomlibjs": "^0.1.7",
     "cli-progress": "^3.11.2",
